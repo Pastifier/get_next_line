@@ -6,7 +6,7 @@
 /*   By: ebinjama <ebinjama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 10:00:59 by ebinjama          #+#    #+#             */
-/*   Updated: 2023/11/22 13:13:31 by ebinjama         ###   ########.fr       */
+/*   Updated: 2023/11/22 13:44:51 by ebinjama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,18 +40,20 @@ size_t	ft_strlen(const char *str)
 
 char	*ft_strjoin(const char *s1, const char *s2)
 {
+	char	*store;
 	char	*self;
 
-	self = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
-	if (!self)
+	store = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (!store)
 		return (NULL);
+	self = store;
 	if (s1)
 		while (*s1)
-			*self++ = *s1++;
+			*store++ = *s1++;
 	if (s2)
 		while (*s2)
-			*self++ = *s2++;
-	*self = 0;
+			*store++ = *s2++;
+	*store = 0;
 	return (self);
 }
 

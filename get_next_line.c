@@ -6,7 +6,7 @@
 /*   By: ebinjama <ebinjama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:09:02 by ebinjama          #+#    #+#             */
-/*   Updated: 2023/11/22 13:17:16 by ebinjama         ###   ########.fr       */
+/*   Updated: 2023/11/22 13:46:36 by ebinjama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*get_next_line(int fd)
 	new_line_in_buff = ft_strchr(buf, '\n');
 	while (!new_line_in_buff)
 	{
-		if (buf[0] != '\0')
+		if (*buf)
 		{
 			line_temp = line;
 			line = ft_strjoin(line, buf);

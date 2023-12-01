@@ -45,10 +45,29 @@ char	*ft_strjoin(const char *s1, const char *s2)
 		while (*s1)
 			*dummy++ = *s1++;
 	if (s2)
-		while (*s2 && *s2 != '\n')
+		while (*s2)
 			*dummy++ = *s2++;
-	if (*s2 == '\n')
-		*dummy = '\n';
 	*++dummy = 0;
+	return (self);
+}
+
+char	*ft_strdup(const char *str)
+{
+	char	*self;
+	char	*dummy;
+
+	if (!str)
+	{
+		self = malloc(sizeof(char) * 1);
+		*self = 0;
+		return (self);
+	}
+	self = malloc(sizeof(char) * (ft_strlen(str) + 1));
+	if (!self)
+		return (NULL);
+	dummy = self;
+	while (*str)
+		*dummy++ = *str++;
+	*dummy = 0;
 	return (self);
 }

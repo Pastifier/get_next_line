@@ -2,12 +2,14 @@
 #include <stddef.h>
 #include <unistd.h>
 
-static char	*read_to_self(int fd);
-
 static char	*read_till_done(int fd, char **trail);
 
 static char	*extract_line(char **from, char **trail);
 
+// TODO:
+// create a buffer for all your memory shenanigans.
+// free that buffer.
+// idk what else to say other than that you're handsome.
 char	*get_next_line(int fd)
 {
 	char		*line;
@@ -42,6 +44,11 @@ char	*read_till_done(int fd, char **trail)
 	return (self);
 }
 
+// TODO:
+// decide how you want to deal with extracting the line
+// (the trick you have in mind is using nl_address as a "bool").
+//
+// burn Norminette.
 char	*extract_line(char **from, char **trails)
 {
 	char	*into;

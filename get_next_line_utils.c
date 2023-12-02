@@ -71,3 +71,16 @@ char	*ft_strdup(const char *str)
 	*dummy = 0;
 	return (self);
 }
+
+char	*ft_strcpy(char *dst, const char *src)
+{
+	size_t	len;
+
+	if (!dst || !src)
+		return (NULL);
+	len = ft_strlen(src);
+	while (*src)
+		*dst++ = *src++;
+	*dst = 0;
+	return (dst);
+}

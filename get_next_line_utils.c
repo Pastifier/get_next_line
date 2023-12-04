@@ -57,11 +57,7 @@ char	*ft_strdup(const char *str)
 	char	*dummy;
 
 	if (!str)
-	{
-		self = malloc(sizeof(char) * 1);
-		*self = 0;
-		return (self);
-	}
+		return (NULL);
 	self = malloc(sizeof(char) * (ft_strlen(str) + 1));
 	if (!self)
 		return (NULL);
@@ -72,11 +68,11 @@ char	*ft_strdup(const char *str)
 	return (self);
 }
 
-char	*ft_strcpy(char *dst, const char *src)
+char	*ft_strncpy(char *dst, const char *src, size_t n)
 {
 	if (!dst || !src)
 		return (NULL);
-	while (*src)
+	while (*src && n--)
 		*dst++ = *src++;
 	*dst = 0;
 	return (dst);

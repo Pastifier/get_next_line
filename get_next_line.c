@@ -20,6 +20,8 @@ char	*get_next_line(int fd)
 		return (NULL);
 	trail[BUFFER_SIZE] = 0;
 	hold = read_till_done(fd, trail);
+	if (!hold)
+		return (NULL);
 	line = extract_line(&hold, trail);
 	free(hold);
 	return (line);
@@ -32,7 +34,9 @@ char	*read_till_done(int fd, char *trail)
 	char	buff[BUFFER_SIZE + 1];
 	bool	done;
 
+	self = NULL;
 	self = ft_strdup(trail);
+	buff[BUFFER_SIZE] = 0;
 	while (self && !ft_strchr(self, '\n'))
 	{
 		done = (read(fd, buff, BUFFER_SIZE) <= 0);
@@ -62,16 +66,16 @@ char	*extract_line(char **from, char *trails)
 
 	nl_address = ft_strchr(*from, '\n');
 	if (nl_address)
-		len = (size_t)(*from - nl_address + 1);
+		len = (size_t)(nl_address - *from + 1);
 	else
 		len = ft_strlen(*from);
 	into = malloc(sizeof(char) * (len + 1));
 	if (!into)
 		return (NULL);
 	into[len] = 0;
-	while (--len)
-		into[len] = *from[len];
-	if (nl_address)
-		ft_strcpy(trails, from[*from - nl_address]);
+	while (len--)
+		into[len] = (*from)[len];
+	if (nl_address && *(nl_address + 1))
+		ft_strncpy(trails, nl_address + 1, BUFFER_SIZE);
 	return (into);
 }

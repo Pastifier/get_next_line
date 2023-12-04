@@ -11,6 +11,6 @@ int main(void) {
 	free(line);
 	line = get_next_line(fd);
 	printf("%s", line);
-	//free(line);
+	free(line);
 	close(fd);
 }

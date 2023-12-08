@@ -3,8 +3,8 @@
 #include <unistd.h>
 
 static char	*read_till_done(int fd, char *trail);
-
 static char	*extract_line(char **from, char *trail);
+static void	*ft_memset(void *s, int c, size_t n);
 
 // TODO:
 // create a buffer for all your memory shenanigans.
@@ -27,6 +27,16 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
+void	*ft_memset(void *s, int c, size_t n)
+{
+	unsigned char	*dummy;
+
+	dummy = (unsigned char *)s;
+	while (n--)
+		dummy[n] = c;
+	return (s);
+}
+
 char	*read_till_done(int fd, char *trail)
 {
 	char	*self;
@@ -34,16 +44,17 @@ char	*read_till_done(int fd, char *trail)
 	char	buff[BUFFER_SIZE + 1U];
 	t_boolint	done;
 
-	self = NULL;
 	self = ft_strdup(trail);
 	buff[BUFFER_SIZE] = 0;
 	while (self && !ft_strchr(self, '\n'))
 	{
-		done = (t_boolint){.value = read(fd, buff, BUFFER_SIZE),
-					.errno = done.value <= 0};
+		done.value = read(fd, buff, BUFFER_SIZE);
 		buff[done.value] = 0;
-		if (done.errno)
+		if (done.value <= 0)
+		{
+			ft_memset(trail, 0, BUFFER_SIZE);
 			return (free(self), NULL);
+		}
 		temp = self;
 		self = ft_strjoin(self, buff);
 		free(temp);
@@ -75,5 +86,7 @@ char	*extract_line(char **from, char *trails)
 		into[len] = (*from)[len];
 	if (nl_address && *(nl_address + 1))
 		ft_strncpy(trails, nl_address + 1, BUFFER_SIZE);
+	else
+		ft_memset(trails, 0, BUFFER_SIZE);
 	return (into);
 }

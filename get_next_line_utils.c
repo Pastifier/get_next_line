@@ -45,7 +45,7 @@ char	*ft_strjoin(const char *s1, const char *s2)
 	if (s2)
 		while (*s2)
 			*dummy++ = *s2++;
-	*++dummy = 0;
+	*dummy = 0;
 	return (self);
 }
 
@@ -72,6 +72,9 @@ char	*ft_strncpy(char *dst, const char *src, size_t n)
 		return (NULL);
 	while (*src && n--)
 		*dst++ = *src++;
+	if (n)
+		while(n--)
+			*dst++ = 0;
 	*dst = 0;
 	return (dst);
 }

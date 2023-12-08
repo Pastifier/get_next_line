@@ -32,12 +32,10 @@ char	*ft_strjoin(const char *s1, const char *s2)
 {
 	char	*self;
 	char	*dummy;
-	bool	is_nl;
 
 	if (!s1 && !s2)
 		return (NULL);
-	is_nl = ('\n' == *(ft_strchr(s2, '\n')));
-	self = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + is_nl + 1));
+	self = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!self)
 		return (NULL);
 	dummy = self;

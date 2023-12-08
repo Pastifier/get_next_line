@@ -7,10 +7,12 @@
 int main(void) {
 	int fd = open("test.txt", O_RDONLY);
 	char *line = get_next_line(fd);
-	printf("%s", line);
+	printf("%s\n", line);
 	free(line);
-	line = get_next_line(fd);
-	printf("%s", line);
-	free(line);
+	while ((line = get_next_line(fd)))
+	{
+		printf("%s\n", line);
+		free(line);
+	}
 	close(fd);
 }

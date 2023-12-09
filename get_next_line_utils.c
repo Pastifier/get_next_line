@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ebinjama <ebinjama@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/09 09:22:18 by ebinjama          #+#    #+#             */
+/*   Updated: 2023/12/09 09:22:19 by ebinjama         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 #include <stddef.h>
 
@@ -73,7 +85,7 @@ char	*ft_strncpy(char *dst, const char *src, size_t n)
 	while (*src && n--)
 		*dst++ = *src++;
 	if (n)
-		while(n--)
+		while (n--)
 			*dst++ = 0;
 	*dst = 0;
 	return (dst);

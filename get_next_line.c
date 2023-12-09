@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ebinjama <ebinjama@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/09 09:22:33 by ebinjama          #+#    #+#             */
+/*   Updated: 2023/12/09 09:22:34 by ebinjama         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 #include <stddef.h>
 #include <unistd.h>
@@ -22,6 +34,8 @@ char	*get_next_line(int fd)
 	hold = read_till_done(fd, trail);
 	if (!hold)
 		return (NULL);
+	if (!ft_strchr(hold, '\n'))
+		return (hold);
 	line = extract_line(&hold, trail);
 	free(hold);
 	return (line);
@@ -44,24 +58,26 @@ char	*read_till_done(int fd, char *trail)
 	char	*buff;
 	int		fetch;
 
-	self = ft_strdup(trail);
+	self = NULL;
+	if (*trail)
+		self = ft_strdup(trail);
 	buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	fetch = 1;
 	if (!buff)
 		return (free(self), NULL);
-	while (self && !ft_strchr(self, '\n'))
+	while (fetch > 0 && !ft_strchr(self, '\n'))
 	{
 		fetch = read(fd, buff, BUFFER_SIZE);
-		if (fetch <= 0)
-		{
-			ft_memset(trail, 0, BUFFER_SIZE);
+		if (fetch <= 0 && self && *self)
+			return (free(buff), self);
+		else if (fetch <= 0)
 			return (free(self), free(buff), NULL);
-		}
 		buff[fetch] = 0;
 		temp = self;
 		self = ft_strjoin(self, buff);
 		free(temp);
 	}
-	return (self);
+	return (free(buff), self);
 }
 
 // TODO:

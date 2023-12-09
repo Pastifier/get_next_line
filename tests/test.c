@@ -5,7 +5,7 @@
 #include <unistd.h>
 
 int main(void) {
-	int fd = open("test.txt", O_RDONLY);
+	int fd = open("test2.txt", O_RDONLY);
 	/*--- READ ---*/
 	//static char buff[BUFFER_SIZE + 1];
 	//buff[BUFFER_SIZE] = 0;
@@ -16,13 +16,16 @@ int main(void) {
 	//printf("TWO:\n\nContained: (%s)\n\nread_val: (%d)\n\n", buff, fetch);
 	
 	/*--- GNL ---*/
+	//char *line = get_next_line(fd);
 	char *line;
+	int i = 1;
 	while ((line = get_next_line(fd)))
 	{
-		printf("%s\n", line);
+		printf("%d: %s\n", i, line);
 		free(line);
+		++i;
 	}
-	printf("%p\n", line);
+	printf("%d: %s\n", i, line);
 	free(line);
 	
 	/*--- BUFFER_SIZE ---*/

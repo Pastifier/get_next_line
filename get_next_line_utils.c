@@ -51,12 +51,10 @@ char	*ft_strjoin(const char *s1, const char *s2)
 	if (!self)
 		return (NULL);
 	dummy = self;
-	if (s1)
-		while (*s1)
-			*dummy++ = *s1++;
-	if (s2)
-		while (*s2)
-			*dummy++ = *s2++;
+	while (s1 && *s1)
+		*dummy++ = *s1++;
+	while (s1 && *s2)
+		*dummy++ = *s2++;
 	*dummy = 0;
 	return (self);
 }

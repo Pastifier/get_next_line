@@ -6,7 +6,7 @@
 /*   By: ebinjama <ebinjama@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 09:22:33 by ebinjama          #+#    #+#             */
-/*   Updated: 2023/12/09 15:32:06 by ebinjama         ###   ########.fr       */
+/*   Updated: 2023/12/09 15:52:24 by ebinjama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,15 @@ char	*get_next_line(int fd)
 {
 	char		*line;
 	char		*hold;
-	static char	trails[1024][BUFFER_SIZE + 1];
+	static char	trail[1024][BUFFER_SIZE + 1];
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	trails[fd][BUFFER_SIZE] = 0;
-	hold = read_till_done(fd, trails[fd]);
+	trail[fd][BUFFER_SIZE] = 0;
+	hold = read_till_done(fd, trail[fd]);
 	if (!hold)
 		return (NULL);
-	line = extract_line(&hold, trails[fd]);
+	line = extract_line(&hold, trail[fd]);
 	free(hold);
 	return (line);
 }

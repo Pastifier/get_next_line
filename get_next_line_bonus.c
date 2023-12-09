@@ -14,7 +14,7 @@
 #include <stddef.h>
 #include <unistd.h>
 
-char		*read_to_buff(int fd, char *self, ssize_t *fetch, char *trail);
+static char	*read_to_buff(int fd, char *self, ssize_t *fetch, char *trail);
 static char	*read_till_done(int fd, char *trail);
 static char	*extract_line(char **from, char *trail);
 static void	*ft_memset(void *s, int c, size_t n);

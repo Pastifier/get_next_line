@@ -31,7 +31,7 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	trails[256][BUFFER_SIZE] = 0;
+	trails[fd][BUFFER_SIZE] = 0;
 	hold = read_till_done(fd, trails[fd]);
 	if (!hold)
 		return (NULL);

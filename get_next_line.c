@@ -14,7 +14,7 @@
 #include <stddef.h>
 #include <unistd.h>
 
-char		*read_to_buff(int fd, char *self, int *fetch);
+char		*read_to_buff(int fd, char *self, ssize_t *fetch);
 static char	*read_till_done(int fd, char *trail);
 static char	*extract_line(char **from, char *trail);
 static void	*ft_memset(void *s, int c, size_t n);
@@ -50,15 +50,16 @@ void	*ft_memset(void *s, int c, size_t n)
 	return (s);
 }
 
-char	*read_to_buff(int fd, char *self, int *fetch)
+char	*read_to_buff(int fd, char *self, ssize_t *fetch)
 {
 	char	*buff;
 	char	*temp;
 
 	buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	*fetch = 1;
 	if (!buff)
 		return (free(self), NULL);
+	buff[BUFFER_SIZE] = 0;
+	*fetch = 1;
 	while (*fetch > 0 && !ft_strchr(self, '\n'))
 	{
 		*fetch = read(fd, buff, BUFFER_SIZE);
@@ -77,7 +78,7 @@ char	*read_to_buff(int fd, char *self, int *fetch)
 char	*read_till_done(int fd, char *trail)
 {
 	char	*self;
-	int		fetch;
+	ssize_t	fetch;
 
 	self = NULL;
 	if (*trail)

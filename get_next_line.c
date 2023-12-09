@@ -15,11 +15,31 @@
 #include <stddef.h>
 #include <unistd.h>
 
-//static char	*read_to_buff(int fd, char *self, char *trail);
-//static char	*read_till_done(int fd, char *trail);
-//static char	*extract_line(char **from, char *trail);
-//static void	*ft_memset(void *s, int c, size_t n);
+static char	*read_to_buff(int fd, char *self, char *trail);
+static char	*read_till_done(int fd, char *trail);
+static char	*extract_line(char **from, char *trail);
+static void	*ft_memset(void *s, int c, size_t n);
 
+// TODO:
+// create a buffer for all your memory shenanigans.
+// free that buffer.
+// idk what else to say other than that you're handsome.
+char	*get_next_line(int fd)
+{
+	char		*line;
+	char		*hold;
+	static char	trail[BUFFER_SIZE + 1];
+
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	trail[BUFFER_SIZE] = 0;
+	hold = read_till_done(fd, trail);
+	if (!hold)
+		return (NULL);
+	line = extract_line(&hold, trail);
+	free(hold);
+	return (line);
+}
 
 void	*ft_memset(void *s, int c, size_t n)
 {
@@ -98,24 +118,4 @@ char	*extract_line(char **from, char *trails)
 	else
 		ft_memset(trails, 0, BUFFER_SIZE);
 	return (into);
-}
-// TODO:
-// create a buffer for all your memory shenanigans.
-// free that buffer.
-// idk what else to say other than that you're handsome.
-char	*get_next_line(int fd)
-{
-	char		*line;
-	char		*hold;
-	static char	trail[BUFFER_SIZE + 1];
-
-	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
-	trail[BUFFER_SIZE] = 0;
-	hold = read_till_done(fd, trail);
-	if (!hold)
-		return (NULL);
-	line = extract_line(&hold, trail);
-	free(hold);
-	return (line);
 }

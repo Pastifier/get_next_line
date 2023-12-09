@@ -14,6 +14,7 @@
 #include <stddef.h>
 #include <unistd.h>
 
+char	*read_to_buff(int fd, char *self, char *trail);
 static char	*read_till_done(int fd, char *trail);
 static char	*extract_line(char **from, char *trail);
 static void	*ft_memset(void *s, int c, size_t n);
@@ -34,8 +35,6 @@ char	*get_next_line(int fd)
 	hold = read_till_done(fd, trail);
 	if (!hold)
 		return (NULL);
-	//if (!ft_strchr(hold, '\n'))
-	//	return (hold);
 	line = extract_line(&hold, trail);
 	free(hold);
 	return (line);
@@ -51,16 +50,12 @@ void	*ft_memset(void *s, int c, size_t n)
 	return (s);
 }
 
-char	*read_till_done(int fd, char *trail)
+char	*read_to_buff(int fd, char *self, char *trail)
 {
-	char	*self;
-	char	*temp;
 	char	*buff;
+	char	*temp;
 	int		fetch;
 
-	self = NULL;
-	if (*trail)
-		self = ft_strdup(trail);
 	buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	fetch = 1;
 	if (!buff)
@@ -68,9 +63,13 @@ char	*read_till_done(int fd, char *trail)
 	while (fetch > 0 && !ft_strchr(self, '\n'))
 	{
 		fetch = read(fd, buff, BUFFER_SIZE);
-		if (fetch <= 0 && self && *self)
+		if (fetch < 0)
+		{
+			ft_memset(trail, 0, BUFFER_SIZE);
+		}
+		if (fetch == 0 && self && *self)
 			return (free(buff), self);
-		else if (fetch <= 0)
+		if (fetch == 0)
 			return (free(self), free(buff), NULL);
 		buff[fetch] = 0;
 		temp = self;
@@ -78,6 +77,17 @@ char	*read_till_done(int fd, char *trail)
 		free(temp);
 	}
 	return (free(buff), self);
+}
+
+char	*read_till_done(int fd, char *trail)
+{
+	char	*self;
+
+	self = NULL;
+	if (*trail)
+		self = ft_strdup(trail);
+	self = read_to_buff(fd, self, trail);
+	return (self);
 }
 
 // TODO:

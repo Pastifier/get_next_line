@@ -14,7 +14,7 @@
 #include <stddef.h>
 #include <unistd.h>
 
-char	*read_to_buff(int fd, char *self, char *trail);
+char		*read_to_buff(int fd, char *self, int *fetch);
 static char	*read_till_done(int fd, char *trail);
 static char	*extract_line(char **from, char *trail);
 static void	*ft_memset(void *s, int c, size_t n);
@@ -50,28 +50,23 @@ void	*ft_memset(void *s, int c, size_t n)
 	return (s);
 }
 
-char	*read_to_buff(int fd, char *self, char *trail)
+char	*read_to_buff(int fd, char *self, int *fetch)
 {
 	char	*buff;
 	char	*temp;
-	int		fetch;
 
 	buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	fetch = 1;
+	*fetch = 1;
 	if (!buff)
 		return (free(self), NULL);
-	while (fetch > 0 && !ft_strchr(self, '\n'))
+	while (*fetch > 0 && !ft_strchr(self, '\n'))
 	{
-		fetch = read(fd, buff, BUFFER_SIZE);
-		if (fetch < 0)
-		{
-			ft_memset(trail, 0, BUFFER_SIZE);
-		}
-		if (fetch == 0 && self && *self)
+		*fetch = read(fd, buff, BUFFER_SIZE);
+		if (*fetch == 0 && self && *self)
 			return (free(buff), self);
-		if (fetch == 0)
+		if (*fetch == 0)
 			return (free(self), free(buff), NULL);
-		buff[fetch] = 0;
+		buff[*fetch] = 0;
 		temp = self;
 		self = ft_strjoin(self, buff);
 		free(temp);
@@ -82,11 +77,17 @@ char	*read_to_buff(int fd, char *self, char *trail)
 char	*read_till_done(int fd, char *trail)
 {
 	char	*self;
+	int		fetch;
 
 	self = NULL;
 	if (*trail)
 		self = ft_strdup(trail);
-	self = read_to_buff(fd, self, trail);
+	self = read_to_buff(fd, self, &fetch);
+	if (fetch < 0)
+	{
+		ft_memset(trail, 0, BUFFER_SIZE);
+		return (free(self), NULL);
+	}
 	return (self);
 }
 

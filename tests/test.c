@@ -5,7 +5,7 @@
 #include <unistd.h>
 
 int main(void) {
-	int fd = open("test2.txt", O_RDONLY);
+	int fd = open("test.txt", O_RDONLY);
 	/*--- READ ---*/
 	//static char buff[BUFFER_SIZE + 1];
 	//buff[BUFFER_SIZE] = 0;

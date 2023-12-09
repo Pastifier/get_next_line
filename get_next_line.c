@@ -82,7 +82,6 @@ char	*read_to_buff(int fd, char *self, char *trail)
 char	*read_till_done(int fd, char *trail)
 {
 	char	*self;
-	ssize_t	fetch;
 
 	self = NULL;
 	if (*trail)

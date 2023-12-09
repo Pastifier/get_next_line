@@ -7,7 +7,7 @@
 int main(void) {
 	int fd = open("test.txt", O_RDONLY);
 	/*--- READ ---*/
-	//char buff[BUFFER_SIZE + 1];
+	//static char buff[BUFFER_SIZE + 1];
 	//buff[BUFFER_SIZE] = 0;
 	//int fetch = read(fd, buff, BUFFER_SIZE);
 	//(void)buff; //(void)fetch;

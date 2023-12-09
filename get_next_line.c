@@ -41,18 +41,20 @@ char	*read_till_done(int fd, char *trail)
 {
 	char	*self;
 	char	*temp;
-	char	buff[BUFFER_SIZE + 1];
+	char	*buff;
 	int		fetch;
 
 	self = ft_strdup(trail);
-	buff[BUFFER_SIZE] = 0;
+	buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (!buff)
+		return (free(self), NULL);
 	while (self && !ft_strchr(self, '\n'))
 	{
 		fetch = read(fd, buff, BUFFER_SIZE);
 		if (fetch <= 0)
 		{
 			ft_memset(trail, 0, BUFFER_SIZE);
-			return (free(self), NULL);
+			return (free(self), free(buff), NULL);
 		}
 		buff[fetch] = 0;
 		temp = self;

@@ -14,7 +14,7 @@ char	*get_next_line(int fd)
 {
 	char		*line;
 	char		*hold;
-	static char	trail[BUFFER_SIZE + 1U];
+	static char	trail[BUFFER_SIZE + 1];
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
@@ -41,20 +41,20 @@ char	*read_till_done(int fd, char *trail)
 {
 	char	*self;
 	char	*temp;
-	char	buff[BUFFER_SIZE + 1U];
-	t_boolint	done;
+	char	buff[BUFFER_SIZE + 1];
+	int		fetch;
 
 	self = ft_strdup(trail);
 	buff[BUFFER_SIZE] = 0;
 	while (self && !ft_strchr(self, '\n'))
 	{
-		done.value = read(fd, buff, BUFFER_SIZE);
-		buff[done.value] = 0;
-		if (done.value <= 0)
+		fetch = read(fd, buff, BUFFER_SIZE);
+		if (fetch <= 0)
 		{
 			ft_memset(trail, 0, BUFFER_SIZE);
 			return (free(self), NULL);
 		}
+		buff[fetch] = 0;
 		temp = self;
 		self = ft_strjoin(self, buff);
 		free(temp);

@@ -35,9 +35,4 @@ char	*ft_strchr(const char *str, int c);
 char	*ft_strdup(const char *str);
 char	*ft_strncpy(char *dst, const char *src, size_t n);
 size_t	ft_strlen(const char *str);
-
-typedef struct s_err_type_int {
-	int		value;
-	bool	errno;
-}	t_boolint;
 #endif // !GET_NEXT_LINE_H

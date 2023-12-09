@@ -34,8 +34,8 @@ char	*get_next_line(int fd)
 	hold = read_till_done(fd, trail);
 	if (!hold)
 		return (NULL);
-	if (!ft_strchr(hold, '\n'))
-		return (hold);
+	//if (!ft_strchr(hold, '\n'))
+	//	return (hold);
 	line = extract_line(&hold, trail);
 	free(hold);
 	return (line);

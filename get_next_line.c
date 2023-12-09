@@ -14,7 +14,7 @@
 #include <stddef.h>
 #include <unistd.h>
 
-char		*read_to_buff(int fd, char *self, ssize_t *fetch);
+char		*read_to_buff(int fd, char *self, ssize_t *fetch, char *trail);
 static char	*read_till_done(int fd, char *trail);
 static char	*extract_line(char **from, char *trail);
 static void	*ft_memset(void *s, int c, size_t n);
@@ -50,7 +50,7 @@ void	*ft_memset(void *s, int c, size_t n)
 	return (s);
 }
 
-char	*read_to_buff(int fd, char *self, ssize_t *fetch)
+char	*read_to_buff(int fd, char *self, ssize_t *fetch, char *trail)
 {
 	char	*buff;
 	char	*temp;
@@ -65,8 +65,11 @@ char	*read_to_buff(int fd, char *self, ssize_t *fetch)
 		*fetch = read(fd, buff, BUFFER_SIZE);
 		if (*fetch == 0 && self && *self)
 			return (free(buff), self);
-		if (*fetch == 0)
-			return (free(self), free(buff), NULL);
+		if (*fetch <= 0)
+		{
+			ft_memset(trail, 0, BUFFER_SIZE);
+			return (free(buff), free(self), NULL);
+		}
 		buff[*fetch] = 0;
 		temp = self;
 		self = ft_strjoin(self, buff);
@@ -83,12 +86,7 @@ char	*read_till_done(int fd, char *trail)
 	self = NULL;
 	if (*trail)
 		self = ft_strdup(trail);
-	self = read_to_buff(fd, self, &fetch);
-	if (fetch < 0)
-	{
-		ft_memset(trail, 0, BUFFER_SIZE);
-		return (free(self), NULL);
-	}
+	self = read_to_buff(fd, self, &fetch, trail);
 	return (self);
 }
 

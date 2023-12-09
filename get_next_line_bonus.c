@@ -27,10 +27,11 @@ char	*get_next_line(int fd)
 {
 	char		*line;
 	char		*hold;
-	static char	trails[256][BUFFER_SIZE + 1];
+	static char	trails[1024][BUFFER_SIZE + 1];
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
+	trails[fd][BUFFER_SIZE] = 0;
 	hold = read_till_done(fd, trails[fd]);
 	if (!hold)
 		return (NULL);

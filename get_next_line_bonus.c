@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stddef.h>
-#include <unistd.h>
 
 static char	*read_to_buff(int fd, char *self, char *trail);
 static char	*read_till_done(int fd, char *trail);

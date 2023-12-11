@@ -52,32 +52,27 @@ void	*ft_memset(void *s, int c, size_t n)
 
 char	*read_to_buff(int fd, char *self, char *trail, ssize_t *fetch)
 {
-	char	*buff;
 	char	*temp;
 
 	if (BUFFER_SIZE <= 0)
 		return (NULL);
-	buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (!buff)
-		return (free(self), NULL);
-	buff[BUFFER_SIZE] = 0;
 	*fetch = 1;
 	while (*fetch > 0 && !ft_strchr(self, '\n'))
 	{
-		*fetch = read(fd, buff, BUFFER_SIZE);
+		*fetch = read(fd, trail, BUFFER_SIZE);
 		if (*fetch == 0 && self && *self)
-			return (free(buff), self);
+			return (self);
 		if (*fetch <= 0)
 		{
 			ft_memset(trail, 0, BUFFER_SIZE);
-			return (free(buff), free(self), NULL);
+			return (free(self), NULL);
 		}
-		buff[*fetch] = 0;
+		trail[*fetch] = 0;
 		temp = self;
-		self = ft_strjoin(self, buff);
+		self = ft_strjoin(self, trail);
 		free(temp);
 	}
-	return (free(buff), self);
+	return (self);
 }
 
 char	*read_till_done(int fd, char *trail)

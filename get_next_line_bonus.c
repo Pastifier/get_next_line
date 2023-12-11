@@ -10,9 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
+#include <unistd.h>
 
-static char	*read_to_buff(int fd, char *self, char *trail);
+static char	*read_to_buff(int fd, char *self, char *trail, ssize_t *fetch);
 static char	*read_till_done(int fd, char *trail);
 static char	*extract_line(char **from, char *trail);
 static void	*ft_memset(void *s, int c, size_t n);
@@ -25,7 +26,7 @@ char	*get_next_line(int fd)
 {
 	char		*line;
 	char		*hold;
-	static char	trail[1024][BUFFER_SIZE + 1];
+	static char	trail[1024][BUFFER_SIZE + 1U];
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
@@ -48,28 +49,28 @@ void	*ft_memset(void *s, int c, size_t n)
 	return (s);
 }
 
-char	*read_to_buff(int fd, char *self, char *trail)
+char	*read_to_buff(int fd, char *self, char *trail, ssize_t *fetch)
 {
 	char	*buff;
 	char	*temp;
-	ssize_t	fetch;
 
+	if (BUFFER_SIZE <= 0)
+		return (NULL);
 	buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buff)
 		return (free(self), NULL);
 	buff[BUFFER_SIZE] = 0;
-	fetch = 1;
-	while (fetch > 0 && !ft_strchr(self, '\n'))
+	while (*fetch > 0 && !ft_strchr(self, '\n'))
 	{
-		fetch = read(fd, buff, BUFFER_SIZE);
-		if (fetch == 0 && self && *self)
+		*fetch = read(fd, buff, BUFFER_SIZE);
+		if (*fetch == 0 && self && *self)
 			return (free(buff), self);
-		if (fetch <= 0)
+		if (*fetch <= 0)
 		{
 			ft_memset(trail, 0, BUFFER_SIZE);
 			return (free(buff), free(self), NULL);
 		}
-		buff[fetch] = 0;
+		buff[*fetch] = 0;
 		temp = self;
 		self = ft_strjoin(self, buff);
 		free(temp);
@@ -80,11 +81,13 @@ char	*read_to_buff(int fd, char *self, char *trail)
 char	*read_till_done(int fd, char *trail)
 {
 	char	*self;
+	ssize_t	fetch;
 
 	self = NULL;
 	if (*trail)
 		self = ft_strdup(trail);
-	self = read_to_buff(fd, self, trail);
+	fetch = 1;
+	self = read_to_buff(fd, self, trail, &fetch);
 	return (self);
 }
 
